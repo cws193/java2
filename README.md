@@ -216,3 +216,237 @@ public class Circle {
 객체가 생성되는 순간에 자동 호출
 
 ## 4월 17일(목)
+
+생성자의 종류
+기본 생성자 (default constructor) : 매개 변수 없고, 아무 작업 없이 단순 리턴하는 생성자
+
+class Circle {
+    public Circle() { } // 기본 생성자
+}
+
+기본 생성자가 자동 생성되는 경우
+
+✅ 클래스에 생성자가 하나도 선언되어 있지 않을 때
+
+✅ 컴파일러에 의해 기본 생성자 자동 생성
+
+public class Circle {
+    int radius;
+    
+    void set(int r) { radius = r; }
+    
+    double getArea() { return 3.14 * radius * radius; }
+
+    public static void main(String[] args) {
+        Circle pizza = new Circle(); // 기본 생성자 호출
+        pizza.set(5);
+        System.out.println(pizza.getArea());
+    }
+}
+
+this 레퍼런스
+
+객체 자신에 대한 레퍼런스
+
+컴파일러에 의해 자동 관리, 개발자는 사용하기만 하면 됨
+
+this.멤버 형태로 멤버를 접근할 때 사용
+
+public class Circle {
+    int radius;
+
+    public Circle() {
+        radius = 1;
+    }
+
+    public Circle(int r) {
+        radius = r;
+    }
+
+    double getArea() {
+        return 3.14 * radius * radius;
+    }
+    ...
+}
+->
+public class Circle {
+    int radius;
+
+    public Circle() {
+        this.radius = 1;
+    }
+
+    public Circle(int radius) {
+        this.radius = radius;
+    }
+
+    double getArea() {
+        return 3.14 * this.radius * this.radius;
+    }
+    ...
+}
+
+this()로 다른 생성자 호출
+
+✅ 같은 클래스의 다른 생성자 호출
+
+✅ 생성자 내에서만 사용 가능
+
+⚠️ 반드시 생성자 코드의 제일 앞에 있어야 함
+
+public Book() {
+    System.out.println("생성자 호출됨");
+    this("", "", 0); // 생성자의 첫 번째 문장이 아니기 때문에 컴파일 오류
+}
+
+객체 배열
+
+객체에 대한 레퍼런스 배열
+
+자바의 객체 배열 만들기 3단계
+
+1. 배열 레퍼런스 변수 선언
+2. 레퍼런스 배열 생성
+3. 배열의 각 원소 객체 생성
+
+Circle[] c;
+c = new Circle[5];
+
+for (int i = 0; i < c.length; i++) {
+    c[i] = new Circle(i); // 각 원소 객체 생성
+}
+
+for (int i = 0; i < c.length; i++) {
+    System.out.print((int)(c[i].getArea()) + " "); // 배열의 각 객체 사용
+}
+
+ 메소드
+메소드는 C/C++의 함수와 동일
+
+자바의 모든 메소드는 반드시 클래스 안에 있어야 함
+→ 캡슐화 원칙
+
+✅ 메소드 형식
+public int getSum(int i, int j) {
+    int sum;
+    sum = i + j;
+    return sum;
+}ㅇ
+
+접근 지정자:
+→ 다른 클래스에서 메소드를 접근할 수 있는지 여부를 선언
+→ public, private, protected, (디폴트) 접근 지정자 생략
+
+리턴 타입:
+→ 메소드가 리턴하는 값의 데이터 타입
+
+ 인자 전달 – 기본 타입의 값이 전달되는 경우
+매개변수가 byte, int, double 등 기본 타입으로 선언되었을 때
+
+호출자가 건네는 값은 매개변수에 복사되어 전달됨
+
+즉, 실제 인자의 값은 변경되지 않음
+
+public class CallByValue {
+    public static void main(String[] args) {
+        int a = 10;
+        increase(a);
+        System.out.println(a);  // 출력: 10
+    }
+
+    static void increase(int n) {
+        n = n + 1;
+    }
+}
+
+main()에서 변수 a = 10 선언
+
+increase(a) 호출 → a의 값이 복사되어 n에 전달됨
+
+n = n + 1 → n은 증가하지만, a는 영향 없음
+
+main()에서 출력된 값은 여전히 10
+
+
+인자 전달 - 배열이 전달되는 경우
+- 배열 레퍼런스만 매개 변수에 전달 : 배열 통째로 전달되지않음
+- 객체가 전달되는 경우와 동일 : 매개 변수가 실인자의 배열 공유
+
+메소드 오버로딩(Overloading)
+ 한 클래스 내에서 두 개 이상의 이름이 같은 메소드 작성
+ - 메소드 이름이 동일해야 함
+ - 매개 변수의 개수 혹은 타입이 달라야 함
+ - 리턴 타입은 오버로딩과 관련 없음
+
+ 객체 치환 시 주의할 점
+ - 객체 치환은 객체 복사가 아니며, 레퍼런스의 복사이다.
+
+ 객체 소멸
+ new 로 할당 받은 객체와 메모리를 JVM으로 되돌려 주는 행위
+ 자바는 객체 소멸 연산자 없음
+ 객체 소멸은 JWM의 고유한 역할
+
+ C/C++에서는 할당받은 객체를 개발자가 프로그램 내에서 삭제해야 함
+ C/C++의 프로그램 작성을 어렵게 만드는 요인
+ 자바에서는 사용하지않는 객체나 배열을 돌려주는 코딩 책임으로부터 개발자 해방
+
+
+ 가비지
+ 가리키는 레퍼런스가 하나도 없는 객체
+ 더 이상 접근할 수 없어 사용할 수 없게 된 메모리
+ 가비지 컬렉션 : 자바 가상 기계의 가비지 컬렉터가 자동으로 가비지 수집 반환
+
+ Person a, b;
+a = new Person("이몽룡");
+b = new Person("성춘향");
+
+b = a;  // 원래 b가 가리키던 "성춘향" 객체는 더 이상 참조되지 않음 → 가비지
+
+
+ 가비지 컬렉션
+ JVM이 가비지 자동 회수
+ 가용 메모리 공간이 일정 이하로 부족해질 때
+ 가비지를 수거하여 가용 메모리 공간으로 확보
+ 가비지 컬렉터에 의해 자동 수행
+
+ 강제 가비지 컬렉션 자동 수행 : system 또는 Runtime 객체의 gc() 메소드 호출
+ System.gc() // 가비지 컬렉션 작동 요청
+ 이 코드는 JWM의 강력한 가비지 컬렉션 요청
+ 그러나 JWM 이 가비지 컬렉션 시점을 전적으로 판단
+
+ 자바의 패키지 개념
+ 패키지
+ 상호 관련 있는 클래스 파일(컴파일된 .class)을 저장하여 관리하는 디렉터리
+ 자바 응용프로그램은 하나 이상의 패키지로 구성
+
+ 접근 지정자
+ 자바의 접근 지정자 4가지 private, protected, public, 디폴트(접근 지정자 생략)
+ 접근 지정자의 목적
+ 클래스나 일부 멤버를 공개하여 다른 클래스에서 접근하도록 허용
+ 객체 지향 언어의 캡슐화 정책은 멤버를 보호하는 것
+ 접근 지정은 캡슐화에 묶인 보호를 일부 해제할 목적으로 사용
+
+
+
+
+ 멤버 접근 지정
+
+public 멤버 : 패키지에 관계 없이 모든 클래스에게 접근 허용
+
+private 멤버 : 동일 클래스 내에만 접근 허용. 상속 받은 서브 클래스에서 접근 불가.
+
+protected 멤버 :
+× 같은 패키지 내의 다른 모든 클래스에게 접근 허용
+× 상속 받은 서브 클래스는 다른 패키지에 있어도 접근 가능
+
+디폴트(default) 멤버 : 같은 패키지 내의 다른 클래스에게 접근 허용
+
+멤버에 접근하는 클래스	private	디폴트 접근 지정	protected	public
+같은 패키지의 클래스	×	○	○	○
+같은 패키지의 서브 클래스	×	○	○	○
+다른 패키지의 서브 클래스	×	×	○	○
+모든 클래스	×	×	×	○
+
+static 메소드는 오직 static 멤버만 접근 가능
+객체가 생성되지 않은 상황에서도 static 메소드는 실행될 수 있기 떄문에, non-static 멤버 활용 불가
+non-static 메소드는 static 멤버 사용 가능
