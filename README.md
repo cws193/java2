@@ -1,6 +1,6 @@
 #천우성 202430134
 ## 3월 20일(목)
-assss
+
 ## 3월 27일(목)
 # 식별자 (identifier) – 명명 규칙 (Naming Convention)
 
